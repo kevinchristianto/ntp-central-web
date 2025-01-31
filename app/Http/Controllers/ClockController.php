@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Clock;
 use App\Models\Line;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 class ClockController extends Controller
@@ -86,5 +87,19 @@ class ClockController extends Controller
         $clock->delete();
 
         return redirect()->route('clocks.index')->with(['success' => true, 'message' => 'Clock deleted successfully']);
+    }
+
+    public function configure(Request $request)
+    {
+        $clock = Clock::find($request->id);
+        $log_data = [
+            'log_type' => 'add clock',
+            'description' => 'Clock "' . $clock->clock_name . '" in line "' . $clock->line->line_name . '" was configured ' . $request->user()->username,
+            'actor' => $request->user()->id,
+            'ip_address' => $request->ip(),
+        ];
+        Log::create($log_data);
+
+        return redirect('http://' . $clock->ip_address . ':1880');
     }
 }

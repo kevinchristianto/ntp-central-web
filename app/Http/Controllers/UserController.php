@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Log;
 use App\Models\User;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -15,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = User::where('username', '!=', 'admin')->get();
+        $data = User::where('username', '!=', 'ADMIN')->paginate(10);
 
         return view('pages.users.index', compact('data'));
     }
@@ -26,14 +27,19 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'username' => 'required|string|max:3|unique:users',
+            'username' => [
+                'required',
+                'string',
+                'max:3',
+                Rule::unique('users')->where(fn (Builder $query) => $query->whereNull('deleted_at'))
+            ],
             'name' => 'required|string|max:255',
             'password' => 'required|string|min:6',
         ]);
         
         $user = new User;
-        $user->username = $validated['username'];
-        $user->name = $validated['name'];
+        $user->username = strtoupper($validated['username']);
+        $user->name = ucwords($validated['name']);
         $user->password = bcrypt($validated['password']);
         $user->is_active = false;
         $save = $user->save();
@@ -63,11 +69,13 @@ class UserController extends Controller
                 'required',
                 'string',
                 'max:3',
-                Rule::unique('users')->ignore($user->id),
+                Rule::unique('users')->ignore($user->id)->where(fn (Builder $query) => $query->whereNull('deleted_at')),
             ],
             'name' => 'required|string|max:255',
             'password' => 'nullable|string|min:6',
         ]);
+        $validated['username'] = strtoupper($validated['username']);
+        $validated['name'] = ucwords($validated['name']);
         if ($validated['password'] === null) {
             unset($validated['password']);
         } else {

@@ -1502,7 +1502,23 @@ h6, .h6 {
     font-weight: 700;
 }
 
+h1::placeholder, .h1::placeholder,
+h2::placeholder, .h2::placeholder,
+h3::placeholder, .h3::placeholder,
+h4::placeholder, .h4::placeholder,
+h5::placeholder, .h5::placeholder,
+h6::placeholder, .h6::placeholder {
+    margin: 0 0 16px 0;
+    font-family: var(--heading-font);
+    line-height: 1.2;
+    font-weight: 700;
+}
+
 h1, .h1 {
+    font-size: var(--heading-one);
+    line-height: 52px;
+}
+h1::placeholder, .h1::placeholder {
     font-size: var(--heading-one);
     line-height: 52px;
 }
@@ -1511,8 +1527,16 @@ h2, .h2 {
     font-size: var(--heading-two);
     line-height: 44px;
 }
+h2::placeholder, .h2::placeholder {
+    font-size: var(--heading-two);
+    line-height: 44px;
+}
 
 h3, .h3 {
+    font-size: var(--heading-three);
+    line-height: 36px;
+}
+h3::placeholder, .h3::placeholder {
     font-size: var(--heading-three);
     line-height: 36px;
 }
@@ -1521,13 +1545,25 @@ h4, .h4 {
     font-size: var(--heading-four);
     line-height: 30px;
 }
+h4::placeholder, .h4::placeholder {
+    font-size: var(--heading-four);
+    line-height: 30px;
+}
 
 h5, .h5 {
     font-size: var(--heading-five);
     line-height: 24px;
 }
+h5::placeholder, .h5::placeholder {
+    font-size: var(--heading-five);
+    line-height: 24px;
+}
 
 h6, .h6 {
+    font-size: var(--heading-six);
+    line-height: 21px;
+}
+h6::placeholder, .h6::placeholder {
     font-size: var(--heading-six);
     line-height: 21px;
 }

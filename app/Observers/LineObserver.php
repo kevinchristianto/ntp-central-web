@@ -18,7 +18,7 @@ class LineObserver
 
         $log_data = [
             'log_type' => 'add line',
-            'description' => 'New production line "' . $line->line_name . '" has been added by ' . Auth::user()->username,
+            'description' => 'New production line "' . $line->line_name . '" was added by ' . Auth::user()->username,
             'actor' => Auth::id(),
             'ip_address' => request()->ip(),
         ];
@@ -35,7 +35,7 @@ class LineObserver
 
         $log_data = [
             'log_type' => 'update line',
-            'description' => 'Production line "' . $line->line_name . '" has been updated by ' . Auth::user()->username,
+            'description' => 'Production line "' . $line->line_name . '" was updated by ' . Auth::user()->username,
             'actor' => Auth::id(),
             'ip_address' => request()->ip(),
         ];
@@ -49,7 +49,7 @@ class LineObserver
     {
         $log_data = [
             'log_type' => 'remove line',
-            'description' => 'Production line "' . $line->line_name . '" has been removed by ' . Auth::user()->username,
+            'description' => 'Production line "' . $line->line_name . '" was removed by ' . Auth::user()->username,
             'actor' => Auth::id(),
             'ip_address' => request()->ip(),
         ];

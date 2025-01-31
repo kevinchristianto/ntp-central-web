@@ -25,40 +25,44 @@
             </button>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Line Code</th>
-                            <th>Line Name</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $no = 1 @endphp
-                        @foreach (@$lines as $line)
-                        <tr>
-                            <td>{{ $no++ }}</td>
-                            <td>{{ $line->code }}</td>
-                            <td>{{ $line->line_name }}</td>
-                            <td class="d-flex flex-row justify-content-center gap-8">
-                                <a class="btn btn-outline-main py-6 px-8" onclick="edit({{ $line->id }})" data-bs-toggle="tooltip" data-bs-title="Edit line details">
-                                    <i class="ph ph-pencil"></i>
-                                </a>
-                                <form action="{{ route('master.lines.destroy', $line->id) }}" method="post" onsubmit="return confirm('Are you sure want to delete this production line? This action is irreversible!')">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-outline-danger py-6 px-8" data-bs-toggle="tooltip" data-bs-title="Delete this line">
-                                        <i class="ph ph-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+            @if (count($lines) > 0)
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Line Code</th>
+                                <th>Line Name</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 1 @endphp
+                            @foreach ($lines as $line)
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $line->code }}</td>
+                                <td>{{ $line->line_name }}</td>
+                                <td class="d-flex flex-row justify-content-center gap-8">
+                                    <a class="btn btn-outline-main py-6 px-8" onclick="edit({{ $line->id }})" data-bs-toggle="tooltip" data-bs-title="Edit line details">
+                                        <i class="ph ph-pencil"></i>
+                                    </a>
+                                    <form action="{{ route('master.lines.destroy', $line->id) }}" method="post" onsubmit="return confirm('Are you sure want to delete this production line? This action is irreversible!')">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-outline-danger py-6 px-8" data-bs-toggle="tooltip" data-bs-title="Delete this line">
+                                            <i class="ph ph-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <x-empty-component />
+            @endif
         </div>
     </div>
 </div>

@@ -23,48 +23,52 @@
             </button>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Line</th>
-                            <th>Clock Name/Location</th>
-                            <th>MAC Address</th>
-                            <th>IP Address</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $no = 1 @endphp
-                        @foreach (@$data as $item)
-                        <tr>
-                            <td>{{ $no++ }}</td>
-                            <td>{{ $item->line->line_name }}</td>
-                            <td>{{ $item->clock_name }}</td>
-                            <td>{{ $item->mac_address }}</td>
-                            <td>{{ $item->ip_address }}</td>
-                            <td class="d-flex flex-row justify-content-center gap-8">
-                                <a href="http://{{ $item->ip_address }}:1880" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success px-8 py-6" data-bs-toggle="tooltip" data-bs-title="Configure this clock">
-                                    <i class="ph ph-arrow-square-out"></i>
-                                </a>
-                                <a class="btn btn-outline-main py-6 px-8" onclick="edit({{ $item->id }})" data-bs-toggle="tooltip" data-bs-title="Edit clock details">
-                                    <i class="ph ph-pencil"></i>
-                                </a>
-                                <form action="{{ route('clocks.destroy', $item->id) }}" method="post" onsubmit="return confirm('Are you sure want to delete this NTP Clock? This action is irreversible!')">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-outline-danger py-6 px-8" data-bs-toggle="tooltip" data-bs-title="Delete this clock">
-                                        <i class="ph ph-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            {{ $data->links() }}
+            @if (count($data) > 0)
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Line</th>
+                                <th>Clock Name/Location</th>
+                                <th>MAC Address</th>
+                                <th>IP Address</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 1 @endphp
+                            @foreach ($data as $item)
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $item->line->line_name }}</td>
+                                <td>{{ $item->clock_name }}</td>
+                                <td>{{ $item->mac_address }}</td>
+                                <td>{{ $item->ip_address }}</td>
+                                <td class="d-flex flex-row justify-content-center gap-8">
+                                    <a href="{{ route('clocks.configure', $item->id) }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success px-8 py-6" data-bs-toggle="tooltip" data-bs-title="Configure this clock">
+                                        <i class="ph ph-arrow-square-out"></i>
+                                    </a>
+                                    <a class="btn btn-outline-main py-6 px-8" onclick="edit({{ $item->id }})" data-bs-toggle="tooltip" data-bs-title="Edit clock details">
+                                        <i class="ph ph-pencil"></i>
+                                    </a>
+                                    <form action="{{ route('clocks.destroy', $item->id) }}" method="post" onsubmit="return confirm('Are you sure want to delete this NTP Clock? This action is irreversible!')">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-outline-danger py-6 px-8" data-bs-toggle="tooltip" data-bs-title="Delete this clock">
+                                            <i class="ph ph-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                {{ $data->links() }}
+            @else
+                <x-empty-component />
+            @endif
         </div>
     </div>
 </div>
@@ -87,7 +91,7 @@
                             <label for="clock-id" class="form-label">Line</label>
                             <select name="line_id" id="line-id" class="form-control">
                                 <option value disabled selected>--- Choose line ---</option>
-                                @foreach (@$lines as $line)
+                                @foreach ($lines as $line)
                                 <option value="{{ $line->id }}">{{ $line->line_name }}</option>
                                 @endforeach
                             </select>

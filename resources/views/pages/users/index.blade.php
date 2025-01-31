@@ -23,60 +23,65 @@
             </button>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Username</th>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $no = 1 @endphp
-                        @foreach (@$data as $item)
-                        <tr>
-                            <td>{{ $no++ }}</td>
-                            <td>{{ $item->username }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>
-                                @if ($item->is_active)
-                                    <span class="badge bg-success-subtle text-success-emphasis" data-bs-toggle="tooltip" data-bs-title="Active">
-                                        <i class="ph ph-check"></i>
-                                    </span>
-                                @else
-                                    <span class="badge bg-danger-subtle text-danger-emphasis" data-bs-toggle="tooltip" data-bs-title="Inactive">
-                                        <i class="ph ph-x"></i>
-                                    </span>
-                                @endif
-                            </td>
-                            <td class="d-flex flex-row justify-content-center gap-8">
-                                <form action="{{ route('users.toggle_status', $item->id) }}" method="post">
-                                    @csrf
-                                    @method('patch')
-                                    <input type="hidden" name="is_active" value="{{ intval(!$item->is_active) }}">
-                                    <button class="btn btn-outline-{{ $item->is_active ? 'danger' : 'success' }} py-6 px-8" data-bs-toggle="tooltip" data-bs-title="{{ $item->is_active ? 'Deactivate this user' : 'Activate this user' }}">
-                                        <i class="ph ph-{{ $item->is_active ? 'x' : 'check' }}"></i>
-                                    </button>
-                                </form>
-                                <a class="btn btn-outline-main py-6 px-8" onclick="edit({{ $item->id }})" data-bs-toggle="tooltip" data-bs-title="Edit user details">
-                                    <i class="ph ph-pencil"></i>
-                                </a>
-                                <form action="{{ route('users.destroy', $item->id) }}" method="post" onsubmit="return confirm('Are you sure want to delete this user? This action is irreversible!')">
-                                    @csrf
-                                    @method('delete')
-                                    <button class="btn btn-outline-danger py-6 px-8" data-bs-toggle="tooltip" data-bs-title="Delete this user">
-                                        <i class="ph ph-trash"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+            @if (count($data) > 0)
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 1 @endphp
+                            @foreach ($data as $item)
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $item->username }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>
+                                    @if ($item->is_active)
+                                        <span class="badge bg-success-subtle text-success-emphasis" data-bs-toggle="tooltip" data-bs-title="Active">
+                                            <i class="ph ph-check"></i>
+                                        </span>
+                                    @else
+                                        <span class="badge bg-danger-subtle text-danger-emphasis" data-bs-toggle="tooltip" data-bs-title="Inactive">
+                                            <i class="ph ph-x"></i>
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="d-flex flex-row justify-content-center gap-8">
+                                    <form action="{{ route('users.toggle_status', $item->id) }}" method="post">
+                                        @csrf
+                                        @method('patch')
+                                        <input type="hidden" name="is_active" value="{{ intval(!$item->is_active) }}">
+                                        <button class="btn btn-outline-{{ $item->is_active ? 'danger' : 'success' }} py-6 px-8" data-bs-toggle="tooltip" data-bs-title="{{ $item->is_active ? 'Deactivate this user' : 'Activate this user' }}">
+                                            <i class="ph ph-{{ $item->is_active ? 'x' : 'check' }}"></i>
+                                        </button>
+                                    </form>
+                                    <a class="btn btn-outline-main py-6 px-8" onclick="edit({{ $item->id }})" data-bs-toggle="tooltip" data-bs-title="Edit user details">
+                                        <i class="ph ph-pencil"></i>
+                                    </a>
+                                    <form action="{{ route('users.destroy', $item->id) }}" method="post" onsubmit="return confirm('Are you sure want to delete this user? This action is irreversible!')">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="btn btn-outline-danger py-6 px-8" data-bs-toggle="tooltip" data-bs-title="Delete this user">
+                                            <i class="ph ph-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                {{ $data->links() }}
+            @else
+                <x-empty-component />
+            @endif
         </div>
     </div>
 </div>

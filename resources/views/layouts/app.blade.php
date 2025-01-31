@@ -113,9 +113,13 @@
     <!-- ============================ Sidebar End  ============================ -->
     
     <div class="dashboard-main-wrapper">
-        <div class="top-navbar d-flex">
-            
-            <div class="flex-align ms-auto">
+        <div class="top-navbar d-flex flex-between gap-16">
+            <div class="flex-align gap-16">
+                <!-- Toggle Button Start -->
+                 <button type="button" class="toggle-btn d-xl-none d-flex text-26 text-gray-500"><i class="ph ph-list"></i></button>
+                <!-- Toggle Button End -->
+            </div>
+            <div class="flex-align">
                 <!-- User Profile Start -->
                 <div class="dropdown">
                     <button class="users arrow-down-icon border border-gray-200 rounded-pill p-4 d-inline-block pe-40 position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">

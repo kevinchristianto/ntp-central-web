@@ -13,10 +13,11 @@ class AuthController extends Controller
     public function authenticate(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'username' => 'required|string',
+            'username' => 'required|string|',
             'password' => 'required|string'
         ]);
         $credentials['is_active'] = true;
+        $credentials['username'] = strtoupper($credentials['username']);
         
         if (Auth::attempt($credentials)) {
             $log_data = [
@@ -46,6 +47,14 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        $log_data = [
+            'log_type' => 'sign out',
+            'description' => Auth::user()->username . ' signed out from ' . $request->ip(),
+            'actor' => Auth::id(),
+            'ip_address' => $request->ip()
+        ];
+        Log::create($log_data);
+
         Auth::logout();
         $request->session()->invalidate(); 
         $request->session()->regenerateToken();

@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
         Route::get('clock', [LogController::class, 'clock_logs'])->name('clock');
     });
     Route::resource('clocks', ClockController::class);
+    Route::get('configure-clock/{id}', [ClockController::class, 'configure'])->name('clocks.configure');
     Route::resource('users', UserController::class);
     Route::patch('toggle-user-status/{user}', [UserController::class, 'toggle_status'])->name('users.toggle_status');
 

@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     {
         $data = [
             'name' => 'Admin',
-            'username' => 'admin',
+            'username' => 'ADMIN',
             'password' => bcrypt('admin'),
             'is_active' => true,
             'created_by' => 1

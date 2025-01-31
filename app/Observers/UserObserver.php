@@ -18,7 +18,7 @@ class UserObserver
 
         $log_data = [
             'log_type' => 'add user',
-            'description' => 'New user "' . $user->username . '" has been added by ' . Auth::user()->username,
+            'description' => 'New user "' . $user->username . '" was added by ' . Auth::user()->username,
             'actor' => Auth::id(),
             'ip_address' => request()->ip(),
         ];
@@ -35,7 +35,7 @@ class UserObserver
 
         $log_data = [
             'log_type' => 'update user',
-            'description' => 'User "' . $user->username . '" has been updated by ' . Auth::user()->username,
+            'description' => 'User "' . $user->username . '" was updated by ' . Auth::user()->username,
             'actor' => Auth::id(),
             'ip_address' => request()->ip(),
         ];
@@ -49,7 +49,7 @@ class UserObserver
     {
         $log_data = [
             'log_type' => 'remove user',
-            'description' => 'User "' . $user->username . '" has been deleted by ' . Auth::user()->username,
+            'description' => 'User "' . $user->username . '" was deleted by ' . Auth::user()->username,
             'actor' => Auth::id(),
             'ip_address' => request()->ip(),
         ];
