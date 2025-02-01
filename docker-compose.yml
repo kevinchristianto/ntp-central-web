@@ -1,0 +1,46 @@
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      args:
+        - PHP_UPSTREAM_CONTAINER=app
+        - PHP_UPSTREAM_PORT=9000
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/sites:/etc/nginx/sites-available
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - app
+    networks:
+      - backend
+  app:
+    build:
+      context: ./docker/app
+    expose:
+      - 9000
+    volumes:
+      - ./docker/app/php.ini:/usr/local/etc/php/php.ini
+      - ./:/var/www
+    networks:
+      - backend
+  database:
+    build:
+      context: ./docker/database
+    volumes:
+      - ./postgres-volume/data:/var/lib/postgresql/data
+      - ./docker/database/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    networks:
+      - backend
+      
+networks:
+  backend:
+    driver: bridge
