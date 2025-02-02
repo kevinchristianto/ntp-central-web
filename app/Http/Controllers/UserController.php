@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = User::where('username', '!=', 'ADMIN')->paginate(10);
+        $data = User::whereNotIn('username', ['ADMIN', 'System Scheduler'])->paginate(10);
 
         return view('pages.users.index', compact('data'));
     }

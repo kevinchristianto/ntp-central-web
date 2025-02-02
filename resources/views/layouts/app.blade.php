@@ -89,6 +89,9 @@
                             <li class="sidebar-submenu__item">
                                 <a href="{{ route('logs.clock') }}" class="sidebar-submenu__link">Clock Logs</a>
                             </li>
+                            <li class="sidebar-submenu__item">
+                                <a href="{{ route('logs.misc') }}" class="sidebar-submenu__link">Misc Logs</a>
+                            </li>
                         </ul>
                         <!-- Submenu End -->
                     </li>

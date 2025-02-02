@@ -14,13 +14,24 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            'name' => 'Admin',
-            'username' => 'ADMIN',
-            'password' => bcrypt('admin'),
-            'is_active' => true,
-            'created_by' => 1
+            [
+                'id' => 0,
+                'name' => 'System Scheduler',
+                'username' => 'System Scheduler',
+                'password' => bcrypt('this isn\'t a password'),
+                'is_active' => true,
+                'created_by' => 0
+            ],
+            [
+                'id' => 1,
+                'name' => 'Admin',
+                'username' => 'ADMIN',
+                'password' => bcrypt('admin'),
+                'is_active' => true,
+                'created_by' => 1
+            ]
         ];
 
-        User::createQuietly($data);
+        User::upsert($data, uniqueBy: ['id']);
     }
 }

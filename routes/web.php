@@ -9,7 +9,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
-        return view('pages.dashboard');
+        $exec = shell_exec('php /var/www/artisan schedule:list 2>&1');
+        $result = explode("\n", $exec);
+        $matched_command = array_values(array_filter($result, function ($item) {
+            return str_contains($item, 'clock:ping');
+        }))[0];
+        preg_match('/[0-9] [a-z]* /i', $matched_command, $next_due);
+        $next_due = trim($next_due[0]);
+
+        return view('pages.dashboard', compact('next_due'));
     })->name('home');
     
     Route::prefix('master')->name('master.')->group(function () {
@@ -18,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('logs')->name('logs.')->group(function () {
         Route::get('user', [LogController::class, 'user_logs'])->name('user');
         Route::get('clock', [LogController::class, 'clock_logs'])->name('clock');
+        Route::get('misc', [LogController::class, 'misc_logs'])->name('misc');
     });
     Route::resource('clocks', ClockController::class);
     Route::get('configure-clock/{id}', [ClockController::class, 'configure'])->name('clocks.configure');

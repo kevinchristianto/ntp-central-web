@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('clock_name');
             $table->string('ip_address');
             $table->string('mac_address');
-            $table->boolean('is_connected')->default(false);
+            $table->boolean('is_online')->default(false);
             $table->foreignId('created_by')->nullable()->index();
             $table->foreignId('updated_by')->nullable()->index();
             $table->timestamps();

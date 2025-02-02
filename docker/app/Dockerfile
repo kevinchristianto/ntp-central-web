@@ -43,7 +43,7 @@ RUN set -xe; \
       php -m | grep -q 'zip'
 
 RUN apt-get update \
-    && apt-get install -y gnupg curl wget ca-certificates unzip lsb-release \
+    && apt-get install -y gnupg fping curl wget ca-certificates unzip lsb-release \
     && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | tee  /etc/apt/sources.list.d/pgdg.list \
     && curl -sL https://deb.nodesource.com/setup_18.x | bash - \

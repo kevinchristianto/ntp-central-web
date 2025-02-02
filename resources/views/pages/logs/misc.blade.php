@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Clock Logs')
+@section('title', 'Misc Logs')
 
 @section('breadcrumbs')
 <div class="breadcrumb mb-24">
@@ -9,7 +9,7 @@
         <li><span class="text-gray-500 fw-normal d-flex"><i class="ph ph-caret-right"></i></span> </li>
         <li><span class="text-gray-200 fw-normal text-15 hover-text-main-600">Logs</span></li>
         <li><span class="text-gray-500 fw-normal d-flex"><i class="ph ph-caret-right"></i></span> </li>
-        <li><span class="text-main-600 fw-normal text-15">Clock Logs</span></li>
+        <li><span class="text-main-600 fw-normal text-15">Misc Logs</span></li>
     </ul>
 </div>
 @endsection
@@ -18,17 +18,14 @@
 <div class="col-12">
     <div class="card">
         <div class="card-header border-bottom border-gray-100">
-            <h5>Clock Logs</h5>
+            <h5>Misc Logs</h5>
             <form class="p-0 row" style="row-gap: .5rem" method="GET" action="">
                 <div class="col">
                     <select class="form-control form-select h6 rounded-4 m-0 py-6 px-8" name="type">
                         <option {{ Request::get('type') == 'all' ? 'selected' : null }} value="all">All</option>
-                        <option {{ Request::get('type') == 'add clock' ? 'selected' : null }} value="add clock">Add Clock</option>
-                        <option {{ Request::get('type') == 'remove clock' ? 'selected' : null }} value="remove clock">Remove Clock</option>
-                        <option {{ Request::get('type') == 'update clock' ? 'selected' : null }} value="update clock">Update Clock</option>
-                        <option {{ Request::get('type') == 'configure clock' ? 'selected' : null }} value="configure clock">Configure Clock</option>
-                        <option {{ Request::get('type') == 'clock went online' ? 'selected' : null }} value="clock went online">Clock Went Online</option> 
-                        <option {{ Request::get('type') == 'clock went offline' ? 'selected' : null }} value="clock went offline">Clock Went Offline</option>
+                        <option {{ Request::get('type') == 'add line' ? 'selected' : null }} value="add line">Add Line</option>
+                        <option {{ Request::get('type') == 'remove line' ? 'selected' : null }} value="remove line">Remove Line</option>
+                        <option {{ Request::get('type') == 'update line' ? 'selected' : null }} value="update line">Update Line</option>
                     </select>
                 </div>
                 <div class="col">
@@ -71,7 +68,7 @@
                             @foreach ($data as $item)
                             <tr class="text-center">
                                 <td>{{ $no++ }}</td>
-                                <td>{!! isset($item->actor) ? $item->actor_detail->username ?? '<i class="text-gray-200">deleted user</i>' : '-' !!}</td>
+                                <td>{!! $item->actor ? $item->actor_detail->username ?? '<i class="text-gray-200">deleted user</i>' : '-' !!}</td>
                                 <td>{{ $item->description }}</td>
                                 <td>{{ $item->ip_address }}</td>
                                 <td>{{ $item->created_at }}</td>

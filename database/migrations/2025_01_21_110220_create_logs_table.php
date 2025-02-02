@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->enum('log_type', ['sign in', 'sign out', 'add clock', 'remove clock', 'update clock', 'configure clock', 'add user', 'remove user', 'update user', 'activate user', 'deactivate user', 'add line', 'remove line', 'update line']);
+            $table->enum('log_type', ['sign in', 'sign out', 'add clock', 'remove clock', 'update clock', 'configure clock', 'clock went offline', 'clock went online', 'add user', 'remove user', 'update user', 'activate user', 'deactivate user', 'add line', 'remove line', 'update line']);
             $table->text('description');
             $table->foreignId('actor')->nullable()->index();
             $table->string('ip_address');
