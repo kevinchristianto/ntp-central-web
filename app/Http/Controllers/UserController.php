@@ -14,9 +14,26 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = User::whereNotIn('username', ['ADMIN', 'System Scheduler'])->paginate(10);
+        $base = User::whereNotIn('username', ['ADMIN', 'System Scheduler']);
+
+        // Filter by username
+        if ($request->username) {
+            $base->where('username', 'LIKE', '%' . $request->username . '%');
+        }
+
+        // Filter by name
+        if ($request->name) {
+            $base->where('name', 'LIKE', '%' . $request->name . '%');
+        }
+
+        // Filter by status
+        if ($request->status && $request->status != 'all') {
+            $base->where('is_active', $request->status);
+        }
+
+        $data = $base->paginate(10);
 
         return view('pages.users.index', compact('data'));
     }

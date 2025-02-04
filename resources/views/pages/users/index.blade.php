@@ -15,12 +15,35 @@
 @section('main-content')
 <div class="col-12">
     <div class="card">
-        <div class="card-header border-bottom border-gray-100 flex-align align-items-center justify-content-between">
-            <h5 class="mb-0">Users</h5>
-            <button class="btn btn-main rounded-pill py-10 d-flex flex-row items-center gap-8" data-bs-toggle="modal" data-bs-target="#user-modal">
-                <i class="ph ph-plus"></i>
-                Add New User
-            </button>
+        <div class="card-header border-bottom border-gray-100">
+            <div class="flex-between mb-16">
+                <h5 class="mb-0">Manage Users</h5>
+                <button class="btn btn-outline-main bg-primary-100 border-primary-100 text-primary rounded-pill py-9 d-flex flex-row items-center gap-8" data-bs-toggle="modal" data-bs-target="#clock-modal">
+                    <i class="ph ph-plus"></i>
+                    Add New User
+                </button>
+            </div>
+            <form class="p-0 row" style="row-gap: .5rem" method="GET" action="">
+                <div class="col">
+                    <input type="text" class="form-control h6 rounded-4 mb-0 py-6 px-8" name="username" placeholder="Username" value="{{ Request::get('username') ?? null }}">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control h6 rounded-4 mb-0 py-6 px-8" name="name" placeholder="Name" value="{{ Request::get('name') ?? null }}">
+                </div>
+                <div class="col">
+                    <select name="status" class="form-select h6 rounded-4 m-0 py-6 px-8">
+                        <option {{ Request::get('status') == 'all' ? 'selected' : null }} value="all">All Status</option>
+                        <option {{ Request::get('status') == 't' ? 'selected' : null }} value="t">Active</option>
+                        <option {{ Request::get('status') == 'f' ? 'selected' : null }} value="f">Inactive</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-auto">
+                    <button class="btn btn-outline-success bg-success-100 border-success-100 text-success w-100 py-9">
+                        <i class="ph ph-funnel"></i>
+                        Filter
+                    </button>
+                </div>
+            </form>
         </div>
         <div class="card-body">
             @if (count($data) > 0)

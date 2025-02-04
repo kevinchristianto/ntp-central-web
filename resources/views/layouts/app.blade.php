@@ -7,7 +7,7 @@
     <!-- Title -->
     <title>@yield('title') - Centralized NTP Clock</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.webp') }}">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <!-- file upload -->
@@ -51,7 +51,7 @@
         <!-- sidebar close btn -->
         
         <a href="{{ route('home') }}" class="sidebar__logo text-center p-20 position-sticky inset-block-start-0 bg-white w-100 z-1 pb-10">
-            {{-- <img src="assets/images/logo/logo.png" alt="Logo"> --}}
+            {{-- <img src="assets/images/logo/logo.webp" alt="Logo"> --}}
             <h2 class="text-20 text-main-600 mb-0 pb-0 lh-sm">Centralized<br>NTP Clock</h2>
         </a>
         
@@ -90,7 +90,7 @@
                                 <a href="{{ route('logs.clock') }}" class="sidebar-submenu__link">Clock Logs</a>
                             </li>
                             <li class="sidebar-submenu__item">
-                                <a href="{{ route('logs.misc') }}" class="sidebar-submenu__link">Misc Logs</a>
+                                <a href="{{ route('logs.misc') }}" class="sidebar-submenu__link">Miscellaneous Logs</a>
                             </li>
                         </ul>
                         <!-- Submenu End -->
@@ -127,7 +127,7 @@
                 <div class="dropdown">
                     <button class="users arrow-down-icon border border-gray-200 rounded-pill p-4 d-inline-block pe-40 position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="position-relative">
-                            <img src="{{ asset('assets/images/avatar.png') }}" alt="Image" class="h-32 w-32 rounded-circle">
+                            <img src="{{ asset('assets/images/avatar.webp') }}" alt="Image" class="h-32 w-32 rounded-circle">
                             <span class="activation-badge w-8 h-8 position-absolute inset-block-end-0 inset-inline-end-0"></span>
                         </span>
                     </button>
@@ -135,7 +135,7 @@
                         <div class="card border border-gray-100 rounded-12 box-shadow-custom">
                             <div class="card-body">
                                 <div class="flex-align gap-8 mb-20">
-                                    <img src="{{ asset('assets/images/avatar.png') }}" alt="" class="w-54 h-54 rounded-circle">
+                                    <img src="{{ asset('assets/images/avatar.webp') }}" alt="" class="w-54 h-54 rounded-circle">
                                     <div class="">
                                         <h4 class="mb-0">{{ auth()->user()->name }}</h4>
                                         <p class="fw-medium text-13 text-gray-200">{{ auth()->user()->username }}</p>

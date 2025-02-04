@@ -15,7 +15,6 @@ class UserSeeder extends Seeder
     {
         $data = [
             [
-                'id' => 0,
                 'name' => 'System Scheduler',
                 'username' => 'System Scheduler',
                 'password' => bcrypt('this isn\'t a password'),
@@ -23,7 +22,6 @@ class UserSeeder extends Seeder
                 'created_by' => 0
             ],
             [
-                'id' => 1,
                 'name' => 'Admin',
                 'username' => 'ADMIN',
                 'password' => bcrypt('admin'),
@@ -33,5 +31,6 @@ class UserSeeder extends Seeder
         ];
 
         User::upsert($data, uniqueBy: ['id']);
+
     }
 }

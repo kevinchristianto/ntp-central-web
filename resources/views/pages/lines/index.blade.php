@@ -19,7 +19,7 @@
     <div class="card">
         <div class="card-header border-bottom border-gray-100 flex-align align-items-center justify-content-between">
             <h5 class="mb-0">Production Lines</h5>
-            <button class="btn btn-main rounded-pill py-10 d-flex flex-row items-center gap-8" data-bs-toggle="modal" data-bs-target="#line-modal">
+            <button class="btn btn-outline-main bg-primary-100 border-primary-100 text-primary rounded-pill py-9 d-flex flex-row items-center gap-8" data-bs-toggle="modal" data-bs-target="#line-modal">
                 <i class="ph ph-plus"></i>
                 Add New Line
             </button>

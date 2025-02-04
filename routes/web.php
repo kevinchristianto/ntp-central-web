@@ -2,23 +2,14 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClockController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LineController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        $exec = shell_exec('php /var/www/artisan schedule:list 2>&1');
-        $result = explode("\n", $exec);
-        $matched_command = array_values(array_filter($result, function ($item) {
-            return str_contains($item, 'clock:ping');
-        }))[0];
-        preg_match('/[0-9] [a-z]* /i', $matched_command, $next_due);
-        $next_due = trim($next_due[0]);
-
-        return view('pages.dashboard', compact('next_due'));
-    })->name('home');
+    Route::get('/', [DashboardController::class, 'index'])->name('home');
     
     Route::prefix('master')->name('master.')->group(function () {
         Route::resource('lines', LineController::class);

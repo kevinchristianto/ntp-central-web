@@ -36,7 +36,7 @@
   
   // ========================== add active class to ul>li top Active current page Js Start =====================
   function dynamicActiveMenuClass(selector) {
-    let url = window.location.href;
+    let url = location.protocol + '//' + location.host + location.pathname;
 
     selector.find("li").each(function () {
       let anchor = $(this).find("a");

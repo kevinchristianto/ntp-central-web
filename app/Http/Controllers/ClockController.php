@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Clock;
 use App\Models\Line;
 use App\Models\Log;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ClockController extends Controller
@@ -12,9 +13,36 @@ class ClockController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Clock::with('line')->paginate(10);
+        $base = Clock::with('line');
+
+        // Filter by line
+        if ($request->line && $request->line != 'all') {
+            $base->where('line_id', $request->line);
+        }
+
+        // Filter by clock_name
+        if ($request->name) {
+            $base->where('clock_name', 'LIKE', '%' . $request->name . '%');
+        }
+
+        // Filter by IP Address
+        if ($request->ip) {
+            $base->where('ip_address', $request->ip);
+        }
+
+        // Filter by MAC Address
+        if ($request->mac) {
+            $base->where('mac_address', $request->mac);
+        }
+
+        // Filter by status
+        if ($request->status && $request->status != 'all') {
+            $base->where('is_online', $request->status);
+        }
+
+        $data = $base->orderByDesc('created_at')->paginate(10)->withQueryString();
         $lines = Line::all();
 
         return view('pages.clocks.index', compact('data', 'lines'));

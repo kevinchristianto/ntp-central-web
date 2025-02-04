@@ -13,65 +13,113 @@
 @endsection
 
 @section('main-content')
-<div class="col-12">
-    <div class="card">
-        <div class="card-header border-bottom border-gray-100 flex-align align-items-center justify-content-between">
-            <h5 class="mb-0">NTP Clocks</h5>
-            <button class="btn btn-main rounded-pill py-10 d-flex flex-row items-center gap-8" data-bs-toggle="modal" data-bs-target="#clock-modal">
-                <i class="ph ph-plus"></i>
-                Add New NTP Clock
-            </button>
-        </div>
-        <div class="card-body">
-            @if (count($data) > 0)
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Line</th>
-                                <th>Clock Name/Location</th>
-                                <th>MAC Address</th>
-                                <th>IP Address</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $no = 1 @endphp
-                            @foreach ($data as $item)
-                            <tr>
-                                <td>{{ $no++ }}</td>
-                                <td>{{ $item->line->line_name }}</td>
-                                <td>{{ $item->clock_name }}</td>
-                                <td>{{ $item->mac_address }}</td>
-                                <td>{{ $item->ip_address }}</td>
-                                <td class="d-flex flex-row justify-content-center gap-8">
-                                    <a href="{{ route('clocks.configure', $item->id) }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success px-8 py-6" data-bs-toggle="tooltip" data-bs-title="Configure this clock">
-                                        <i class="ph ph-arrow-square-out"></i>
-                                    </a>
-                                    <a class="btn btn-outline-main py-6 px-8" onclick="edit({{ $item->id }})" data-bs-toggle="tooltip" data-bs-title="Edit clock details">
-                                        <i class="ph ph-pencil"></i>
-                                    </a>
-                                    <form action="{{ route('clocks.destroy', $item->id) }}" method="post" onsubmit="return confirm('Are you sure want to delete this NTP Clock? This action is irreversible!')">
-                                        @csrf
-                                        @method('delete')
-                                        <button class="btn btn-outline-danger py-6 px-8" data-bs-toggle="tooltip" data-bs-title="Delete this clock">
-                                            <i class="ph ph-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header border-bottom border-gray-100">
+                <div class="flex-between mb-16">
+                    <h5 class="mb-0">NTP Clocks</h5>
+                    <button class="btn btn-outline-main bg-primary-100 border-primary-100 text-primary rounded-pill py-9 d-flex flex-row items-center gap-8" data-bs-toggle="modal" data-bs-target="#clock-modal">
+                        <i class="ph ph-plus"></i>
+                        Add New NTP Clock
+                    </button>
                 </div>
-                {{ $data->links() }}
-            @else
-                <x-empty-component />
-            @endif
+                <form class="p-0 row" style="row-gap: .5rem" method="GET" action="">
+                    <div class="col">
+                        <select class="form-control form-select h6 rounded-4 m-0 py-6 px-8" name="line">
+                            <option {{ Request::get('line') == 'all' ? 'selected' : null }} value="all">All Lines</option>
+                            @foreach ($lines as $line)
+                                <option {{ Request::get('line') == $line->id ? 'selected' : null }} value="{{ $line->id }}">{{ $line->line_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control h6 rounded-4 mb-0 py-6 px-8" name="name" placeholder="Clock Name/Location" value="{{ Request::get('name') ?? null }}">
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control h6 rounded-4 mb-0 py-6 px-8" name="ip" placeholder="IP Address" value="{{ Request::get('ip') ?? null }}">
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control h6 rounded-4 mb-0 py-6 px-8" name="mac" placeholder="MAC Address" value="{{ Request::get('mac') ?? null }}">
+                    </div>
+                    <div class="col">
+                        <select class="form-control form-select h6 rounded-4 m-0 py-6 px-8" name="status">
+                            <option {{ Request::get('status') == 'all' ? 'selected' : null }} value="all">All Status</option>
+                            <option {{ Request::get('status') == 't' ? 'selected' : null }} value="t">Online</option>
+                            <option {{ Request::get('status') == 'f' ? 'selected' : null }} value="f">Offline</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-auto">
+                        <button class="btn btn-outline-success bg-success-100 border-success-100 text-success w-100 py-9">
+                            <i class="ph ph-funnel"></i>
+                            Filter
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body">
+                @if (count($data) > 0)
+                    <div class="row {{ count($data->links()->elements[0]) > 1 ? 'mb-20' : '' }}" style="row-gap: 1.5rem">
+                        @foreach ($data as $item)
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="card border border-gray-100"> 
+                                    <div class="card-body p-8">
+                                        <div class="p-8">
+                                            <span class="text-13 py-2 px-10 rounded-pill bg-main-50 text-main-600 mb-8">{{ $item->line->line_name }}</span>
+                                            <h5 class="mb-8">{{ $item->clock_name }}</h5>
+
+                                            <div class="gap-8">
+                                                <div class="flex-align gap-4">
+                                                    <span class="text-md text-main-600 d-flex"><i class="ph ph-address-book"></i></span>
+                                                    <span class="text-13 text-gray-600">{{ $item->ip_address }}</span>
+                                                </div>
+                                                <div class="flex-align gap-4">
+                                                    <span class="text-md text-main-600 d-flex"><i class="ph ph-hard-drives"></i></span>
+                                                    <span class="text-13 text-gray-600">{{ $item->mac_address }}</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex-between mt-16">
+                                                @if ($item->is_online)
+                                                    <span class="text-13 py-3 px-16 rounded-pill bg-success-50 text-success-600 d-flex align-items-center gap-8">
+                                                        <i class="ph ph-smiley text-lg"></i>
+                                                        <span>Online</span>
+                                                    </span>
+                                                @else
+                                                    <span class="text-13 py-3 px-16 rounded-pill bg-danger-50 text-danger-600 d-flex align-items-center gap-8">
+                                                        <i class="ph ph-smiley-sad text-lg"></i>
+                                                        <span>Offline</span>
+                                                    </span>
+                                                @endif
+                                                
+                                                <div class="d-flex flex-row justify-content-end gap-4 flex-wrap">
+                                                    <a href="{{ route('clocks.configure', $item->id) }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success rounded-pill btn-sm px-8 py-8" data-bs-toggle="tooltip" data-bs-title="Configure this clock">
+                                                        <i class="ph ph-arrow-square-out"></i>
+                                                    </a>
+                                                    <a class="btn btn-outline-main rounded-pill btn-sm py-8 px-8" onclick="edit({{ $item->id }})" data-bs-toggle="tooltip" data-bs-title="Edit clock details">
+                                                        <i class="ph ph-pencil"></i>
+                                                    </a>
+                                                    <form action="{{ route('clocks.destroy', $item->id) }}" method="post" onsubmit="return confirm('Are you sure want to delete this NTP Clock? This action is irreversible!')">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button class="btn btn-outline-danger rounded-pill btn-sm py-8 px-8" data-bs-toggle="tooltip" data-bs-title="Delete this clock">
+                                                            <i class="ph ph-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    {{ $data->links() }}
+                @else
+                    <x-empty-component />
+                @endif
+            </div>
         </div>
     </div>
-</div>
 @endsection
 
 @section('modal-section')

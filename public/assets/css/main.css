@@ -319,6 +319,11 @@
     color: hsl(var(--white)) !important;
 }
 
+.btn.bg-success-100:hover {
+    background-color: var(--success-500) !important;
+    color: #fff !important;
+}
+
 /* ================================= Button Css End =========================== */
 /* ================================= Form Css Start =========================== */
 /* input Start */
