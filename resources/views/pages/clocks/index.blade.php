@@ -61,7 +61,7 @@
                     <div class="row {{ count($data->links()->elements[0]) > 1 ? 'mb-20' : '' }}" style="row-gap: 1.5rem">
                         @foreach ($data as $item)
                             <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="card border border-gray-100"> 
+                                <div class="card border border-{{ $item->is_online ? 'success' : 'danger' }}-400"> 
                                     <div class="card-body p-8">
                                         <div class="p-8">
                                             <span class="text-13 py-2 px-10 rounded-pill bg-main-50 text-main-600 mb-8">{{ $item->line->line_name }}</span>

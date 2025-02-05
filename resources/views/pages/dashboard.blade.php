@@ -12,8 +12,8 @@
                     <div class="col-sm-7">
                         <div class="grettings-box__content py-xl-4">
                             <h2 class="text-white mb-0">Hello, {{ explode(' ', auth()->user()->name)[0] }}! </h2>
-                            <p class="text-15 fw-light text-white">It's <b id="time"></b>. How's your day?</p>
-                            <p class="text-lg mt-16 text-white">Anyway, here's the summary of the all NTP Clocks installed in KGM</p>
+                            <p class="text-15 fw-light text-white">It's <b id="time">{{ date('l, d M Y, H:i:s') }}</b><br>How's your day? Smile! It confuses people 😄</p>
+                            <p class="text-lg fw-medium mt-16 text-white">Anyway, here's the summary of the all NTP Clocks installed in KGM.<br>You can click on each card to see the details</p>
                         </div>
                     </div>
                     <div class="col-sm-5 d-sm-block d-none">
@@ -96,7 +96,7 @@
             <div class="alert alert-primary text-primary-800 d-flex align-items-center gap-6" role="alert">
                 <i class="ph ph-info text-lg"></i>
                 <span>
-                    The NTP clocks will be checked again in about <b>{{ str_contains($next_due, 'minute') ? $next_due . ' and a few seconds' : $next_due }}</b> or at exactly <b>{{ date('H:i', strtotime($next_due . ' +1 minute')) }}</b>
+                    The NTP clocks will be checked again in about <b>{{ str_contains($next_due, 'minute') ? $next_due . ' and a few second(s)' : $next_due }}</b> or at exactly <b>{{ date('H:i', strtotime($next_due . ' +1 minute')) }}</b>
                 </span>
             </div>
         </div>
@@ -107,7 +107,7 @@
 <script src="{{ asset('assets/js/moment.min.js') }}"></script>
 <script>
     setInterval(() => {
-        const time = moment().format('dddd, DD MMM YYYY, hh:mm:ss');
+        const time = moment().format('dddd, DD MMM YYYY, HH:mm:ss');
         document.getElementById('time').innerHTML = time;
     }, 1000);
 </script>

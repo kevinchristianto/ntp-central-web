@@ -29,6 +29,7 @@ class PingClock extends Command
      */
     public function handle()
     {
+        $this->line('===== BEGIN Ping Clock at ' . date('H:i:s d F Y') . ' =====');
         // Get all clocks, then send 2 ping to all of them in a single command using fping
         $clocks = Clock::with('line')->get()->toArray();
         $addresses = array_column($clocks, 'ip_address');
@@ -39,16 +40,19 @@ class PingClock extends Command
         // Separate the result by line
         $results = explode("\n", $ping);
         array_pop($results);        // Pop the last array item which is nothing but empty or null item
+        $all_online = true;
 
         foreach ($results as $key => $line) {
             // Separate the result by delimiter
             $line = explode(' : ', $line);
-            $address = $line[0];
-            $results = $line[1];
+            $address = trim($line[0]);
+            $results = trim($line[1]);
             
             // Just a check to see if the IP address matches
             if ($address == $clocks[$key]['ip_address']) {      // IP Matched
                 if (str_contains($results, '-')) {              // Clock offline
+                    $all_online = false;
+                    
                     if ($clocks[$key]['is_online']) {           // Clock current state in database is online
                         // Set state to offline, then log the event
                         Clock::where('id', $clocks[$key]['id'])->update(['is_online' => false]);
@@ -75,19 +79,23 @@ class PingClock extends Command
                         ];
                         Log::create($log_data);
                     }
-                    $this->line($address . ' is online at ' . date('H:i:s d F Y'));
+                    // $this->line($address . ' is online at ' . date('H:i:s d F Y'));
                 }
             } else {                                            // IP Mismatched
-                $log_data = [
-                    'log_type' => 'misc',
-                    'description' => 'IP mismatched for address ' . $address . ' and clock IP ' . $clocks[$key]['ip_address'],
-                    'actor' => 1,
-                    'ip_address' => $address,
-                ];
-                Log::create($log_data);
+                // $log_data = [
+                //     'log_type' => 'misc',
+                //     'description' => 'IP mismatched for address ' . $address . ' and clock IP ' . $clocks[$key]['ip_address'],
+                //     'actor' => 1,
+                //     'ip_address' => $address,
+                // ];
+                // Log::create($log_data);
 
-                $this->line($address . ' mismatched.');
+                $this->line($address . ' mismatched with ' . $clocks[$key]['ip_address']);
             }
         }
+
+        $all_online ? $this->info('All clocks are online') : null;
+        $this->line('===== END Ping Clock at ' . date('H:i:s d F Y') . ' =====');
+        $this->newLine();
     }
 }

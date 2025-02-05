@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Clock;
 use App\Models\Log;
+use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -12,8 +13,8 @@ class DashboardController extends Controller
     {
         // Get the next due time for the clock ping from the console command
         $exec = shell_exec('php /var/www/artisan schedule:list 2>&1');
-        $result = explode("\n", $exec);
-        $matched_command = array_values(array_filter($result, function ($item) {
+        $results = explode("\n", $exec);
+        $matched_command = array_values(array_filter($results, function ($item) {
             return str_contains($item, 'clock:ping');
         }))[0];
         preg_match('/ [0-9]{1,2} [a-z]* /i', $matched_command, $next_due);        // Make sure the space in the regex is there and not removed
@@ -28,6 +29,8 @@ class DashboardController extends Controller
         })->count();
         $offline_clocks_today = Log::where('log_type', 'clock went offline')->where('created_at', '>=', date('Y-m-d'))->groupBy('ip_address')->count();
 
-        return view('pages.dashboard', compact('next_due', 'clocks', 'online_clocks', 'offline_clocks', 'offline_clocks_today'));
+        $inspiring_quote_lol = Inspiring::quote();
+
+        return view('pages.dashboard', compact('next_due', 'clocks', 'online_clocks', 'offline_clocks', 'offline_clocks_today', 'inspiring_quote_lol'));
     }
 }

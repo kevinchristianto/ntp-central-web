@@ -18,7 +18,7 @@
         <div class="card-header border-bottom border-gray-100">
             <div class="flex-between mb-16">
                 <h5 class="mb-0">Manage Users</h5>
-                <button class="btn btn-outline-main bg-primary-100 border-primary-100 text-primary rounded-pill py-9 d-flex flex-row items-center gap-8" data-bs-toggle="modal" data-bs-target="#clock-modal">
+                <button class="btn btn-outline-main bg-primary-100 border-primary-100 text-primary rounded-pill py-9 d-flex flex-row items-center gap-8" data-bs-toggle="modal" data-bs-target="#user-modal">
                     <i class="ph ph-plus"></i>
                     Add New User
                 </button>
